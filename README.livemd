@@ -1,0 +1,53 @@
+# Functional Web Development with Phoenix LiveView
+
+```elixir
+import IEx.Helpers
+```
+
+## Project Configuration
+
+Install the `phx_new` script.
+
+```sh
+mix archive.install hex phx_new 1.8.0-rc.0
+```
+
+Setup the app in a directory of your choosing.
+
+```sh
+mix phx.new yap --binary-id --database sqlite3 --adapter bandit --no-install
+```
+
+Change into the new directory.
+
+```sh
+cd yap
+```
+
+## Run the Project
+
+Install dependencies.
+
+```sh
+mix deps.get
+```
+
+Compile dependencies only if not already.
+
+```sh
+mix loadpaths
+```
+
+Install and setup app requirements.
+
+```sh
+mix setup
+```
+
+Start the Phoenix server.
+
+```sh
+iex -S mix phx.server
+```
+
+Open the web browser at `http://localhost:4000`.
