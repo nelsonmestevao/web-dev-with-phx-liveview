@@ -7,7 +7,10 @@ defmodule Yap.Application do
 
   @impl true
   def start(_type, _args) do
+    Yap.MemoryCache.setup()
+
     children = [
+      Yap.GlobalCounter,
       YapWeb.Telemetry,
       Yap.Repo,
       {Ecto.Migrator,

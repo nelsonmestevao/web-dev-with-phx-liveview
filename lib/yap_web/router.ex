@@ -20,6 +20,7 @@ defmodule YapWeb.Router do
     get "/", PageController, :home
 
     live "/counter", CounterLive, :show
+    live "/form", UserFormLive, :show
   end
 
   # Other scopes may use custom stacks.
