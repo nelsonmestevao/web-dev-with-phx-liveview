@@ -43,7 +43,7 @@ defmodule YapWeb.Layouts do
             <.link navigate={~p"/form"} class="btn btn-ghost">User Form</.link>
           </li>
           <li>
-            <.link navigate={"#"} class="btn btn-ghost">Posts</.link>
+            <.link navigate="#" class="btn btn-ghost">Posts</.link>
           </li>
           <li>
             <.theme_toggle />

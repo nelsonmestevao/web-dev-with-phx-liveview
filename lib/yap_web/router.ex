@@ -1,6 +1,8 @@
 defmodule YapWeb.Router do
   use YapWeb, :router
 
+  import YapWeb.UserTracking
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule YapWeb.Router do
     plug :put_root_layout, html: {YapWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :ensure_anonymous_cookie
   end
 
   pipeline :api do
@@ -21,7 +24,10 @@ defmodule YapWeb.Router do
 
     live "/counter", CounterLive, :show
     live "/counter/global", GlobalCounterLive, :show
-    live "/form", UserFormLive, :show
+
+    live_session :user_tracking, session: {YapWeb.UserTracking, :build_session, []} do
+      live "/form", UserFormLive, :show
+    end
   end
 
   # Other scopes may use custom stacks.

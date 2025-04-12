@@ -13,8 +13,7 @@ defmodule Yap.Application do
       Yap.GlobalCounter,
       YapWeb.Telemetry,
       Yap.Repo,
-      {Ecto.Migrator,
-       repos: Application.fetch_env!(:yap, :ecto_repos), skip: skip_migrations?()},
+      {Ecto.Migrator, repos: Application.fetch_env!(:yap, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:yap, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Yap.PubSub},
       # Start a worker by calling: Yap.Worker.start_link(arg)
