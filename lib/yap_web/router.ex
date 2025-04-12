@@ -28,6 +28,11 @@ defmodule YapWeb.Router do
     live_session :user_tracking, session: {YapWeb.UserTracking, :build_session, []} do
       live "/form", UserFormLive, :show
     end
+
+    live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Form, :new
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/edit", PostLive.Form, :edit
   end
 
   # Other scopes may use custom stacks.
