@@ -20,6 +20,7 @@ defmodule YapWeb.Router do
     get "/", PageController, :home
 
     live "/counter", CounterLive, :show
+    live "/counter/global", GlobalCounterLive, :show
     live "/form", UserFormLive, :show
   end
 

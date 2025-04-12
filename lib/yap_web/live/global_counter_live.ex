@@ -23,17 +23,25 @@ defmodule YapWeb.GlobalCounterLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: GlobalCounter.subscribe()
+
     {:ok, assign(socket, count: GlobalCounter.get())}
   end
 
+  @impl true
   def handle_event("increment", _params, socket) do
     GlobalCounter.increment()
-    {:noreply, assign(socket, count: GlobalCounter.get())}
+    {:noreply, socket}
   end
 
   @impl true
   def handle_event("decrement", _params, socket) do
     GlobalCounter.decrement()
-    {:noreply, assign(socket, count: GlobalCounter.get())}
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:global_counter, count}, socket) do
+    {:noreply, assign(socket, count: count)}
   end
 end

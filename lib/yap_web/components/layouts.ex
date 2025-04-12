@@ -37,7 +37,7 @@ defmodule YapWeb.Layouts do
             <.link navigate={~p"/counter"} class="btn btn-ghost">Counter</.link>
           </li>
           <li>
-            <.link navigate={"#"} class="btn btn-ghost">Global Counter</.link>
+            <.link navigate={~p"/counter/global"} class="btn btn-ghost">Global Counter</.link>
           </li>
           <li>
             <.link navigate={~p"/form"} class="btn btn-ghost">User Form</.link>
