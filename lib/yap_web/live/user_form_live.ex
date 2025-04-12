@@ -8,9 +8,11 @@ defmodule YapWeb.UserFormLive do
     ~H"""
     <Layouts.app flash={@flash}>
       <div class="flex gap-4 items-center">
-        <img class="w-32 h-32 rounded-full" />
+        <img :if={@avatar} src={"/uploads/#{@avatar}"} class="w-32 h-32 rounded-full" />
         <h1 :if={@name} class="text-2xl mt-4">{@name}</h1>
       </div>
+
+      <.upload_avatar uploads={@uploads} />
 
       <.form for={@form} phx-change="validate-user-data" phx-submit="submit-user-data">
         <.input label="Name" field={@form[:name]} />
@@ -54,12 +56,13 @@ defmodule YapWeb.UserFormLive do
 
   @impl true
   def mount(_params, %{"whoami" => whoami}, socket) do
-    data = MemoryCache.get(whoami, %{name: nil})
+    data = MemoryCache.get(whoami, %{name: nil, avatar: nil})
 
     {:ok,
      socket
      |> assign(:whoami, whoami)
      |> assign(:name, data.name)
+     |> assign(:avatar, data[:avatar])
      |> assign(:form, to_form(%{"name" => nil}, as: "user"))
      |> allow_upload(:avatar,
        accept: ~w(.jpg .jpeg .png),
@@ -69,6 +72,33 @@ defmodule YapWeb.UserFormLive do
      )}
   end
 
+  @impl true
+  def handle_event("validate-upload", _params, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("submit-upload", _params, socket) do
+    [avatar] =
+      consume_uploaded_entries(socket, :avatar, fn %{path: path}, _entry ->
+        dest = Path.join("priv/static/uploads", Path.basename(path))
+
+        File.cp!(path, dest)
+
+        save_user_data!(socket, :avatar, Path.basename(dest))
+
+        {:ok, dest}
+      end)
+
+    {:noreply, assign(socket, avatar: avatar)}
+  end
+
+  @impl true
+  def handle_event("cancel-upload", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :avatar, ref)}
+  end
+
+  @impl true
   def handle_event("validate-user-data", %{"user" => %{"name" => name}}, socket) do
     errors = validate_name(name)
 
@@ -77,6 +107,7 @@ defmodule YapWeb.UserFormLive do
     {:noreply, assign(socket, form: form)}
   end
 
+  @impl true
   def handle_event("submit-user-data", %{"user" => %{"name" => name}}, socket) do
     case validate_name(name) do
       [] ->
