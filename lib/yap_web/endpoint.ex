@@ -26,6 +26,11 @@ defmodule YapWeb.Endpoint do
     gzip: not code_reloading?,
     only: YapWeb.static_paths()
 
+  plug Plug.Static,
+    at: "/uploads",
+    from: Path.expand("./priv/static/uploads"),
+    gzip: false
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
