@@ -15,7 +15,7 @@ defmodule YapWeb.PostLive.Form do
 
       <.form for={@form} id="post-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:body]} type="textarea" label="Body" />
+        <.input field={@form[:body]} type="textarea" phx-hook="AutoResizeTextarea" label="Body" />
         <.input field={@form[:published]} type="checkbox" label="Published" />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Post</.button>

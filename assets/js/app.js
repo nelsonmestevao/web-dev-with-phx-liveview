@@ -24,8 +24,28 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+const Hooks = {}
+
+Hooks.AutoResizeTextarea = {
+    mounted() {
+        this.resizeTextarea()
+
+        this.el.addEventListener('input', () => {
+            this.resizeTextarea()
+        })
+    },
+    updated() {
+        this.resizeTextarea()
+    },
+    resizeTextarea() {
+        this.el.style.height = 'auto'
+        this.el.style.height = `${this.el.scrollHeight}px`
+    }
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
+  hooks: Hooks,
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken}
 })
