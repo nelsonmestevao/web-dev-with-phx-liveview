@@ -7,9 +7,9 @@ defmodule Yap.MemoryCache do
     :ets.insert(:cache, {key, value})
   end
 
-  def get(key) do
+  def get(key, default \\ nil) do
     case :ets.lookup(:cache, key) do
-      [] -> nil
+      [] -> default
       [{_key, value}] -> value
     end
   end

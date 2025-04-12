@@ -66,7 +66,7 @@ defmodule YapWeb.UserFormLive do
   end
 
   def save_user_data!(socket, key, value) do
-    data = (MemoryCache.get(socket.assigns.whoami) || %{} ) |> Map.put(key, value)
+    data = MemoryCache.get(socket.assigns.whoami, %{name: nil, avatar: nil}) |> Map.put(key, value)
     true = MemoryCache.set(socket.assigns.whoami, data)
   end
 
